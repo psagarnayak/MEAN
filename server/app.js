@@ -1,9 +1,13 @@
-const express = require('express')();
-const http = require('http');
+const app = require('express')();
+const bodyParser = require('body-parser');
+const postController = require('./controllers/post.controller')
+
+app.use(bodyParser.json());
+
+app.use('/api/posts', postController);
 
 const port = process.env.port || 3000;
-express.set('port', port);
-
-//const app = express();
-const httpServer = http.createServer(express);
-httpServer.listen(port);
+const server = app.listen(port, () => {
+    console.log('Listening on: ' + port);
+}
+);
