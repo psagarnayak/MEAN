@@ -1,0 +1,11 @@
+{
+  "name": "mern-server",
+  "version": "1.0.0",
+  "description": "Backend Server with user/password authentication and JWT based authoriztion",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
