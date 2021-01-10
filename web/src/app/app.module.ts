@@ -8,6 +8,7 @@ import { ShowPostsComponent } from './post/show-posts/show-posts.component';
 import { CreatePostComponent } from './post/create-post/create-post.component';
 import { LoginComponent } from './auth/login/login.component';
 import { SignupComponent } from './auth/signup/signup.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 const appRoutes: Routes = [
   { path: '', component: ShowPostsComponent },
@@ -29,6 +30,7 @@ const appRoutes: Routes = [
 
     BrowserModule,
     HttpClientModule,
+    ReactiveFormsModule,
     RouterModule.forRoot(appRoutes)
   ],
   providers: [],

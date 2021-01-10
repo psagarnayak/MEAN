@@ -14,8 +14,11 @@ export class PostService {
   constructor(private http: HttpClient) { }
 
   public fetchPosts(): Observable<Post[]> {
-
     return this.http.get<Post[]>(this.POST_URL);
+  }
+
+  public createPost(post: Post) {
+    return this.http.post<PostUpdateResponseDTO>(this.POST_URL, post);
   }
 
   public deletePost(post: Post): Observable<PostUpdateResponseDTO> {

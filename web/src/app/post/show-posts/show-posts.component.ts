@@ -32,6 +32,7 @@ export class ShowPostsComponent implements OnInit {
           console.log('Could not delete post. HTTP Response', response);
         } else {
           this.posts.splice(index, 1);
+          alert('Post Has been Deleted!');
         }
       },
       (error) => {

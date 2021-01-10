@@ -1,0 +1,15 @@
+.form-control.ng-touched.ng-invalid {
+  border: 1px solid red;
+}
+
+.help-block {
+  color: red
+}
+
+div.actions {
+  text-align: right;
+}
+
+div.actions > button {
+  margin: 1rem;
+}
