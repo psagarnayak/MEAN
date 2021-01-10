@@ -18,9 +18,9 @@ router.post("/", (req, res) => {
     });
 
     newPost.save().then((result) => {
-        res.status(201).json(newPost);
+        res.status(201).json({ success: true, message: `Post Saved Successfully!`, post: newPost });
     }).catch((err) => {
-        res.status(500).json(err);
+        res.status(500).json({ success: false, message: `Save Failed!`, error: err });
     });
 
 });
@@ -32,11 +32,11 @@ router.delete("/:id", (req, res) => {
     postModel.deleteOne({ '_id': id }).then((result) => {
         console.log("Delete Executed, result: ", result);
         if (result.n == 0) {
-            res.status(404).json({ message: `Post with id ${id} NOT FOUND!` });
+            res.status(404).json({ success: false, message: `Post with id ${id} NOT FOUND!` });
         } else if (result.deletedCount >= 1) {
-            res.status(200).send({ message: `Post with id ${id} DELETED!` });
+            res.status(200).send({ success: true, message: `Post with id ${id} DELETED!` });
         } else {
-            res.status(200).send({ message: `Post with id ${id} could NOT be deleted!` });
+            res.status(200).send({ success: false, message: `Post with id ${id} could NOT be deleted!` });
         }
     }).catch((err) => {
         console.log("Error on delete: ", err);
@@ -49,20 +49,22 @@ router.put('/:id', (req, res) => {
     postModel.updateOne({ '_id': id }, { title: req.body.title, content: req.body.content }).then((result) => {
         console.log("Update Executed, result: ", result);
         if (result.n == 0) {
-            res.status(404).json({ message: `Post with id ${id} NOT FOUND!` });
+            res.status(404).json(
+                { success: false, message: `Post with id ${id} NOT FOUND!` });
         } else if (result.nModified >= 1) {
             postModel.findById(id).then(doc => {
-                res.status(200).send({ message: `Post with id ${id} Updated!`, newVersion: doc });
+                res.status(200).json(
+                    { success: true, message: `Post with id ${id} Updated!`, post: doc });
             }).catch(err => {
-
-                res.status(200).send({ message: `Post with id ${id} Updated!` });
+                res.status(200).json(
+                    { success: false, message: `Error Occured!`, error: err });
             });
         } else {
-            res.status(200).send({ message: `Post with id ${id} could NOT be Updated!` });
+            res.status(200).json({ success: false, message: `Post with id ${id} could NOT be Updated!` });
         }
     }).catch((err) => {
         console.log("Error on update: ", err);
-        res.status(500).json({ message: 'Error Occured', err });
+        res.status(500).json({ success: false, message: `Error Occured!`, error: err });
     });
 });
 

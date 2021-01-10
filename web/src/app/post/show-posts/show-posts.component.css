@@ -1,0 +1,16 @@
+button {
+  margin: 0.5rem;
+}
+
+div.row.buttons {
+  text-align: right;
+}
+
+div.panel-body>div.row.content {
+  padding-left: 1rem;
+}
+
+div.panel {
+  border: 1px solid cornflowerblue;
+  padding: 1rem;
+}
