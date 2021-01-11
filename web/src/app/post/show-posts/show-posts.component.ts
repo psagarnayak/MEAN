@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { PostService } from './../../service/post.service';
 
-import { Post, PostUpdateResponseDTO } from '../post.model';
+import { Post, PostUpdateResponseDTO } from '../post.models';
+import { OperationStatus } from 'src/app/common/generic.models';
 
 @Component({
   selector: 'app-show-posts',
@@ -11,6 +12,7 @@ import { Post, PostUpdateResponseDTO } from '../post.model';
 export class ShowPostsComponent implements OnInit {
 
   posts: Post[] = [];
+  postIndexToEdit = -1;
 
   constructor(private postService: PostService) { }
 
@@ -23,9 +25,17 @@ export class ShowPostsComponent implements OnInit {
       })
   }
 
-  deletePost(post: Post, index: number) {
+  editPost(index: number) {
+    this.postIndexToEdit = index;
+  }
 
-    this.postService.deletePost(post).subscribe(
+  onEditStatusChange(status: OperationStatus) {
+    this.postIndexToEdit = -1;
+  }
+
+  deletePost(index: number) {
+
+    this.postService.deletePost(this.posts[index]).subscribe(
       (response: PostUpdateResponseDTO) => {
         if (!response.success) {
           alert('Could not delete post. HTTP Response!');
@@ -40,5 +50,4 @@ export class ShowPostsComponent implements OnInit {
       }
     );
   }
-
 }

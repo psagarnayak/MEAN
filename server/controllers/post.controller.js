@@ -48,10 +48,7 @@ router.put('/:id', (req, res) => {
     const id = req.params['id'];
     postModel.updateOne({ '_id': id }, { title: req.body.title, content: req.body.content }).then((result) => {
         console.log("Update Executed, result: ", result);
-        if (result.n == 0) {
-            res.status(404).json(
-                { success: false, message: `Post with id ${id} NOT FOUND!` });
-        } else if (result.nModified >= 1) {
+        if (result.nModified >= 1) {
             postModel.findById(id).then(doc => {
                 res.status(200).json(
                     { success: true, message: `Post with id ${id} Updated!`, post: doc });
@@ -59,6 +56,12 @@ router.put('/:id', (req, res) => {
                 res.status(200).json(
                     { success: false, message: `Error Occured!`, error: err });
             });
+        } else if (result.n == 0) {
+            res.status(404).json(
+                { success: false, message: `Post with id ${id} NOT FOUND!` });
+        } else if (result.nModified == 0) {
+            res.status(200).json(
+                { success: true, message: `Post with id ${id} is already Up to Date!` });
         } else {
             res.status(200).json({ success: false, message: `Post with id ${id} could NOT be Updated!` });
         }

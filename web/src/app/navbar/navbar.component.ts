@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-navbar',
@@ -7,9 +7,24 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavbarComponent implements OnInit {
 
-  constructor() { }
+  @ViewChild('navbarElementRef') navbarElement?: ElementRef;
+
+  navBarCollapse = true;
+  constructor(private rendrer: Renderer2) { }
+
 
   ngOnInit(): void {
   }
+
+  toggleNavBar() {
+
+    this.navBarCollapse = !this.navBarCollapse;
+  }
+  /* if (this.navBarElement?.nativeElement.class.collapsed) {
+    this.rendrer.removeClass(this.navBarElement, 'collapsed');
+  } else {
+    this.rendrer.addClass(this.navBarElement, 'collapsed');
+  } */
+
 
 }

@@ -22,8 +22,10 @@
         </span>
       </div>
       <div class="actions">
-        <button class="btn btn-danger" type="button" (click)="postForm.reset()">Clear</button>
-        <button class="btn btn-primary" type="submit">Create Post</button>
+        <button *ngIf="postToEdit" class="btn btn-danger" type="button" (click)="cancelUpdate()">
+          < Go Back</button>
+            <button class="btn btn-danger" type="button" (click)="postForm.reset()">Clear</button>
+            <button class="btn btn-primary" type="submit">{{postToEdit ? 'Save Edits' : 'Create Post'}}</button>
       </div>
     </form>
   </div>

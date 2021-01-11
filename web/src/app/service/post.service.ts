@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from './../../environments/environment';
-import { Post, PostUpdateResponseDTO } from '../post/post.model';
+import { Post, PostUpdateResponseDTO } from '../post/post.models';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +19,11 @@ export class PostService {
 
   public createPost(post: Post) {
     return this.http.post<PostUpdateResponseDTO>(this.POST_URL, post);
+  }
+
+  public updatePost(post: Post) {
+    return this.http.put<PostUpdateResponseDTO>(
+      this.POST_URL.concat('/').concat(post._id || ''), post);
   }
 
   public deletePost(post: Post): Observable<PostUpdateResponseDTO> {

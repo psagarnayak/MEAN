@@ -5,14 +5,15 @@ import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { RouterModule, Routes } from '@angular/router';
 import { ShowPostsComponent } from './post/show-posts/show-posts.component';
-import { CreatePostComponent } from './post/create-post/create-post.component';
+import { CreateEditPostComponent } from './post/create-edit-post/create-edit-post.component';
 import { LoginComponent } from './auth/login/login.component';
 import { SignupComponent } from './auth/signup/signup.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { DropdownToggleDirective } from './directives/dropdown-toggle.directive';
 
 const appRoutes: Routes = [
   { path: '', component: ShowPostsComponent },
-  { path: 'createPost', component: CreatePostComponent },
+  { path: 'createPost', component: CreateEditPostComponent },
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignupComponent },
 ];
@@ -22,9 +23,10 @@ const appRoutes: Routes = [
     AppComponent,
     NavbarComponent,
     ShowPostsComponent,
-    CreatePostComponent,
+    CreateEditPostComponent,
     LoginComponent,
     SignupComponent,
+    DropdownToggleDirective,
   ],
   imports: [
 
