@@ -34,7 +34,6 @@ export class CreateEditPostComponent implements OnInit {
 
   validateLanguage(control: FormControl): { [key: string]: boolean } | null {
 
-    console.log(control.value);
     if (control.value && this.badLanguage.some((word) => (control.value as string).toLowerCase().split(' ').indexOf(word.toLowerCase()) >= 0)) {
       return { 'containsAbuse': true };
     }
@@ -61,7 +60,6 @@ export class CreateEditPostComponent implements OnInit {
       this.postService.updatePost(this.postToEdit).subscribe(
         (response) => {
           if (response && response.success) {
-            alert('Post Updated Successfully!');
             this.opStatusEmitter.emit(OperationStatus.COMPLETED);
           } else {
             alert('Post updation failed: '.concat(JSON.stringify(response.error)));
@@ -82,7 +80,6 @@ export class CreateEditPostComponent implements OnInit {
       this.postService.createPost(newPost).subscribe(
         (response) => {
           if (response && response.success) {
-            alert('Post Created Successfully!');
             this.router.navigate(['/']);
           } else {
             alert('Post Creation failed: '.concat(JSON.stringify(response.error)));

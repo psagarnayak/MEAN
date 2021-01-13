@@ -1,11 +1,24 @@
 const router = require('express').Router();
+const e = require('express');
 const postModel = require('../model/post.model');
 
 router.get("/", (req, res) => {
 
-    postModel.find({}).then((docs) => {
-        res.status(200).json(docs);
-    }).catch((err) => {
+    let getQuery = postModel.find({});
+    if (req.query.justCount != undefined) {
+        getQuery = getQuery.count();
+    } else if (req.query.page && req.query.pageSize) {
+        // if (req.query.page < 1) {
+        //     return res.status(200).send([]);
+        // }
+        getQuery = getQuery
+            .skip((req.query.page - 1) * req.query.pageSize)
+            .limit(+req.query.pageSize);
+    }
+    getQuery.then((results) => {
+        res.status(200).json(results);
+    }).catch((error) => {
+        res.status(500).json({ message: "Error Fetching posts", error });
         console.log("Error fetching posts: ", error);
     });
 });

@@ -1,0 +1,18 @@
+<nav aria-label="Page navigation" *ngIf="pageSize>0 && totalPages>0">
+  <ul class="pagination">
+    <li [ngClass]="{'disabled': activePage == 1}">
+      <a aria-label="Previous" (click)="onPrevPage()">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+
+    <li *ngFor="let pageDisp of pageDisplays; let i = index" [ngClass]="{'active' : (i+1) === this.activePage}">
+      <a (click)="onPageChange(i+1)">{{pageDisp}}</a>
+    </li>
+    <li [ngClass]="{'disabled': activePage == totalPages}">
+      <a aria-label="Next" (click)="onNextPage()">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+  </ul>
+</nav>

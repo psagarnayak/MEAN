@@ -10,6 +10,7 @@ import { LoginComponent } from './auth/login/login.component';
 import { SignupComponent } from './auth/signup/signup.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DropdownToggleDirective } from './directives/dropdown-toggle.directive';
+import { PaginationComponent } from './common/pagination/pagination.component';
 
 const appRoutes: Routes = [
   { path: '', component: ShowPostsComponent },
@@ -27,6 +28,7 @@ const appRoutes: Routes = [
     LoginComponent,
     SignupComponent,
     DropdownToggleDirective,
+    PaginationComponent,
   ],
   imports: [
 

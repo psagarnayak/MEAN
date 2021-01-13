@@ -7,10 +7,14 @@ div.row.buttons {
 }
 
 div.panel-body>div.row.content {
-  padding-left: 1rem;
+  padding-left: 8px;
 }
 
 div.panel {
   border: 1px solid cornflowerblue;
-  padding: 1rem;
+  padding: 8px;
+}
+
+app-pagination {
+  text-align: center;
 }

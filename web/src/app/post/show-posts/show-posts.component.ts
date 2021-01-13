@@ -14,15 +14,37 @@ export class ShowPostsComponent implements OnInit {
   posts: Post[] = [];
   postIndexToEdit = -1;
 
+  totalPosts = 0;
+  postsPerPage = 3;
+  currentPage = 0;
+
   constructor(private postService: PostService) { }
 
   ngOnInit(): void {
-    this.postService.fetchPosts().subscribe((posts) => {
-      this.posts = posts;
-    },
+    console.log('on Init');
+    this.postService.fetchPostCount().subscribe(
+      (postCount) => {
+        this.totalPosts = postCount;
+      },
       (error) => {
         console.log('Error Fetching Posts: ', error);
-      })
+      }
+    );
+
+  }
+
+  onPageChange(newPage: number) {
+    console.log("PageChangeEvent: ", newPage);
+    this.currentPage = newPage;
+    this.posts = []
+    this.postService.fetchPosts(this.currentPage, this.postsPerPage).subscribe(
+      (posts) => {
+        this.posts = posts;
+      },
+      (error) => {
+        console.log('Error Fetching Posts: ', error);
+      }
+    );
   }
 
   editPost(index: number) {
@@ -41,8 +63,8 @@ export class ShowPostsComponent implements OnInit {
           alert('Could not delete post. HTTP Response!');
           console.log('Could not delete post. HTTP Response', response);
         } else {
-          this.posts.splice(index, 1);
-          alert('Post Has been Deleted!');
+          this.totalPosts--;
+          this.onPageChange(this.currentPage);
         }
       },
       (error) => {
