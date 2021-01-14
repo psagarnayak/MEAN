@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { RouterModule, Routes } from '@angular/router';
@@ -12,6 +12,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { DropdownToggleDirective } from './directives/dropdown-toggle.directive';
 import { PaginationComponent } from './common/pagination/pagination.component';
 import { AppRoutingModule } from './app.routing.module';
+import { TokenInterceptor } from './auth/token.interceptor';
 
 @NgModule({
   declarations: [
@@ -25,13 +26,12 @@ import { AppRoutingModule } from './app.routing.module';
     PaginationComponent,
   ],
   imports: [
-
     BrowserModule,
     HttpClientModule,
     ReactiveFormsModule,
     AppRoutingModule
   ],
-  providers: [],
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
