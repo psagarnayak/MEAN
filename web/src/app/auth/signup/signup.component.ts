@@ -1,5 +1,7 @@
 import { Component, OnInit, SimpleChanges } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { AuthService } from './../../service/auth.service';
 
 @Component({
   selector: 'app-signup',
@@ -8,14 +10,21 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 })
 export class SignupComponent implements OnInit {
 
+  signupAttempted = false;
+  signupFailed = false;
+  signupErrorMsg = '';
+
+  nameControl = new FormControl(null, Validators.required);
+  emailControl = new FormControl(null, [Validators.required, Validators.email]);
+  passwordControl = new FormControl(null, [Validators.required]);
   signupForm = new FormGroup({
-    'name': new FormControl(null, Validators.required),
-    'email': new FormControl(null, [Validators.required, Validators.email]),
-    'password': new FormControl(null, [Validators.required]),
+    'name': this.nameControl,
+    'email': this.emailControl,
+    'password': this.passwordControl,
     'passwordVerify': new FormControl(null, [Validators.required, this.passwordsMatch.bind(this)])
   });
 
-  constructor() { }
+  constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
   }
@@ -28,8 +37,29 @@ export class SignupComponent implements OnInit {
   }
 
   performSignup() {
-    if (this.signupForm.invalid) return;
+    this.signupFailed = false;
+    this.signupErrorMsg = '';
+    if (this.signupForm.invalid) {
+      this.signupAttempted = true;
+      return;
+    }
+    this.authService.performSignup(
+      this.emailControl.value,
+      this.nameControl.value,
+      this.passwordControl.value,
+    ).subscribe((response) => {
 
-    console.log("Signing Up Now!");
+      if (response && response.success) {
+        alert('Signup Successful! Please log into your account.');
+        this.router.navigate(['/login']);
+      } else {
+        this.signupFailed = true;
+        this.signupErrorMsg = response.message;
+      }
+
+    }, (error) => {
+      this.signupFailed = true;
+      this.signupErrorMsg = error.error.message;
+    });
   }
 }

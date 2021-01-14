@@ -4,7 +4,9 @@
 
 export const environment = {
   production: false,
-  'posts-url': 'http://localhost:3000/api/posts'
+  'posts-url': 'http://localhost:3000/api/posts',
+  'login-url': 'http://localhost:3000/api/auth/login',
+  'signup-url': 'http://localhost:3000/api/auth/signup'
 };
 
 /*
