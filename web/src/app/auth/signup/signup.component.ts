@@ -21,7 +21,7 @@ export class SignupComponent implements OnInit {
   }
 
   passwordsMatch(passwordControl: FormControl): { [key: string]: boolean } | null {
-    if (passwordControl && pperformSignupasswordControl.value != this.signupForm?.get('password')?.value) {
+    if (passwordControl && passwordControl.value != this.signupForm?.get('password')?.value) {
       return { 'passwordMismatch': true };
     }
     return null;
