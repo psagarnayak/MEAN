@@ -11,13 +11,7 @@ import { SignupComponent } from './auth/signup/signup.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DropdownToggleDirective } from './directives/dropdown-toggle.directive';
 import { PaginationComponent } from './common/pagination/pagination.component';
-
-const appRoutes: Routes = [
-  { path: '', component: ShowPostsComponent },
-  { path: 'createPost', component: CreateEditPostComponent },
-  { path: 'login', component: LoginComponent },
-  { path: 'signup', component: SignupComponent },
-];
+import { AppRoutingModule } from './app.routing.module';
 
 @NgModule({
   declarations: [
@@ -35,7 +29,7 @@ const appRoutes: Routes = [
     BrowserModule,
     HttpClientModule,
     ReactiveFormsModule,
-    RouterModule.forRoot(appRoutes)
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]
