@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { AuthService } from './../service/auth.service';
-import { Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-navbar',
@@ -35,5 +35,4 @@ export class NavbarComponent implements OnInit, OnDestroy {
   triggerSignout() {
     this.authService.logout();
   }
-
 }

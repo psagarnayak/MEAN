@@ -1,15 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { PostService } from './../../service/post.service';
 
 import { Post, PostUpdateResponseDTO } from '../post.models';
-import { OperationStatus } from 'src/app/common/generic.models';
+import { OperationStatus, UserProfile } from 'src/app/common/generic.models';
+import { AuthService } from './../../service/auth.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-show-posts',
   templateUrl: './show-posts.component.html',
   styleUrls: ['./show-posts.component.css']
 })
-export class ShowPostsComponent implements OnInit {
+export class ShowPostsComponent implements OnInit, OnDestroy {
 
   posts: Post[] = [];
   postIndexToEdit = -1;
@@ -18,9 +20,19 @@ export class ShowPostsComponent implements OnInit {
   postsPerPage = 3;
   currentPage = 0;
 
-  constructor(private postService: PostService) { }
+  userProfileSubscription?: Subscription;
+  loggedInUser?: UserProfile;
+
+  constructor(private postService: PostService, private authService: AuthService) { }
 
   ngOnInit(): void {
+    this.userProfileSubscription = this.authService.loggedInStateObservable.subscribe((loginStatus) => {
+      if (loginStatus) {
+        this.loggedInUser = this.authService.getUserProfile();
+      } else {
+        this.loggedInUser = undefined;
+      }
+    })
     this.postService.fetchPostCount().subscribe(
       (postCount) => {
         this.totalPosts = postCount;
@@ -29,7 +41,12 @@ export class ShowPostsComponent implements OnInit {
         console.log('Error Fetching Posts: ', error);
       }
     );
+  }
 
+  ngOnDestroy(): void {
+    if (this.userProfileSubscription) {
+      this.userProfileSubscription.unsubscribe();
+    }
   }
 
   onPageChange(newPage: number) {

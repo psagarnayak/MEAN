@@ -2,6 +2,8 @@ const router = require('express').Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const userModel = require('../model/user.model');
+const postModel = require('../model/post.model')
+const auth = require('../service/auth.interceptor');
 
 const TOKEN_EXPIRES_IN = process.env.TOKEN_EXPIRES_IN_SEC;
 
@@ -14,14 +16,21 @@ router.get('/users', (req, res, nest) => {
     });
 });
 
-/* router.delete("/users/all", (req, res) => {
+router.delete("/users/all", (req, res) => {
 
-    userModel.deleteMany({}).then((result) => {
-        res.status(200).send({ success: true, message: `Deleted All User Accounts!!` });
+
+    postModel.deleteMany({}).then((result) => {
+        userModel.deleteMany({}).then((result) => {
+            res.status(200).send({ success: true, message: `Deleted All User Accounts and Posts!!` });
+        }).catch((error) => {
+            res.status(500).json({ success: false, message: `Deleted Posts, could not delete User Accounts!` });
+        });
     }).catch((error) => {
         res.status(500).json({ success: false, message: `Could not delete User Accounts!` });
     });
-}); */
+
+
+});
 
 router.post('/signup', (req, res, next) => {
 
@@ -69,7 +78,7 @@ router.post('/login', (req, res, next) => {
         bcrypt.compare(req.body.password, userDoc.password).then((passwordMatches) => {
             if (passwordMatches) {
                 let token = jwt.sign({ _id: userDoc._id, name: userDoc.name, email: userDoc.email }, process.env.JWT_SECRET,
-                    { expiresIn: TOKEN_EXPIRES_IN }
+                    { expiresIn: +TOKEN_EXPIRES_IN }
                 );
                 res.status(200).json({
                     success: true,
@@ -77,6 +86,7 @@ router.post('/login', (req, res, next) => {
                     token,
                     tokenExpiresInSec: TOKEN_EXPIRES_IN,
                     profile: {
+                        _id: userDoc._id,
                         name: userDoc.name,
                         email: userDoc.email,
                     }

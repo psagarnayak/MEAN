@@ -14,7 +14,7 @@ export class TokenInterceptor implements HttpInterceptor {
 
     if (this.authService.checkIfLoggedIn() && loggedInProfile) {
       req = req.clone(
-        { headers: req.headers.append('Authentication', 'Bearer ' + this.authService.getUserProfile()?.authToken) }
+        { headers: req.headers.append('Authorization', 'Bearer ' + this.authService.getUserProfile()?.authToken) }
       );
     }
     return next.handle(req);

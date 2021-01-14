@@ -2,6 +2,8 @@
   <app-pagination [pageSize]="postsPerPage" [totalEntries]="totalPosts" (activePageChange)="onPageChange($event)">
   </app-pagination>
   <span *ngIf="postIndexToEdit < 0">
+
+    <h2 *ngIf="posts.length == 0">No Posts available!</h2>
     <div class="panel panel-info" *ngFor="let post of posts; let i = index">
       <div class="panel-heading">
         <div class="panel-title">
@@ -12,7 +14,7 @@
         <div class="row content">
           <div class="col-sm-9">{{post.content}}</div>
           <div class="col-sm-3">
-            <div class="row buttons">
+            <div class="row buttons" *ngIf="loggedInUser && post.createdBy == loggedInUser._id">
               <button class="btn btn-primary" (click)="editPost(i)">Edit</button>
               <button class="btn btn-danger" (click)="deletePost(i)">Delete</button>
             </div>

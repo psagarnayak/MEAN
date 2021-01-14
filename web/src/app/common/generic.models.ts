@@ -3,6 +3,7 @@ export enum OperationStatus {
 }
 
 export interface UserProfile {
+  _id: string,
   name: string,
   email: string,
   authToken: string,
@@ -15,6 +16,7 @@ export interface LoginResponse {
   token: string,
   tokenExpiresInSec: string
   profile: {
+    _id: string,
     name: string,
     email: string
   }

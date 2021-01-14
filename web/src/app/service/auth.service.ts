@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class AuthService {
   private loggedInState$ = new BehaviorSubject<boolean>(false);
   private logoutAfterTimer?: NodeJS.Timeout;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private router: Router) {
     this.extractSavedProfile();
   }
 
@@ -34,6 +35,7 @@ export class AuthService {
       this.LOGIN_URL, { email, password }).pipe(tap((response) => {
         if (response && response.success) {
           this.loggedInProfile = {
+            _id: response.profile._id,
             name: response.profile.name,
             email: response.profile.email,
             authToken: response.token,
@@ -56,6 +58,7 @@ export class AuthService {
       clearTimeout(this.logoutAfterTimer);
     }
     this.loggedInState$.next(false);
+    this.router.navigate(['/'])
   }
 
   get loggedInStateObservable(): Observable<boolean> {
@@ -74,13 +77,14 @@ export class AuthService {
   }
 
   private extractSavedProfile() {
+    let _id = localStorage.getItem('userProfile._id');
     let name = localStorage.getItem('userProfile.name');
     let email = localStorage.getItem('userProfile.email');
     let authToken = localStorage.getItem('userProfile.authToken');
     let expiresAt = localStorage.getItem('userProfile.expiresAt');
 
-    if (name && email && authToken && expiresAt && +expiresAt > new Date().getTime()) {
-      this.loggedInProfile = { name, email, authToken, 'expiresAt': +expiresAt }
+    if (_id && name && email && authToken && expiresAt && +expiresAt > new Date().getTime()) {
+      this.loggedInProfile = { _id, name, email, authToken, 'expiresAt': +expiresAt }
       this.saveProfileToLocalStorage();
       this.setLogoutExpirationTimeout();
       this.loggedInState$.next(true);
@@ -102,6 +106,7 @@ export class AuthService {
 
   private saveProfileToLocalStorage() {
     if (this.loggedInProfile && this.checkIfLoggedIn()) {
+      localStorage.setItem('userProfile._id', this.loggedInProfile._id);
       localStorage.setItem('userProfile.name', this.loggedInProfile.name);
       localStorage.setItem('userProfile.email', this.loggedInProfile.email);
       localStorage.setItem('userProfile.authToken', this.loggedInProfile.authToken);
