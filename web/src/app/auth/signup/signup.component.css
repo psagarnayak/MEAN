@@ -1,0 +1,18 @@
+form {
+  border: 1px solid grey;
+  margin-top: 3rem;
+  padding: 3rem 3rem;
+  background-color: honeydew;
+}
+
+.help-block {
+  color: red;
+}
+
+.form-control.ng-touched.ng-invalid {
+  border: solid 1px red;
+}
+
+div.submit{
+  text-align: center;
+}

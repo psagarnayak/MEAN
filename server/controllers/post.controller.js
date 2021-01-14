@@ -4,19 +4,23 @@ const postModel = require('../model/post.model');
 
 router.get("/", (req, res) => {
 
-    let getQuery = postModel.find({});
+    let getQuery = postModel.find();
     if (req.query.justCount != undefined) {
-        getQuery = getQuery.count();
+        getQuery = getQuery.countDocuments();
     } else if (req.query.page && req.query.pageSize) {
-        // if (req.query.page < 1) {
-        //     return res.status(200).send([]);
-        // }
+        if (req.query.page < 1) {
+            return res.status(200).send([]);
+        }
         getQuery = getQuery
             .skip((req.query.page - 1) * req.query.pageSize)
             .limit(+req.query.pageSize);
     }
     getQuery.then((results) => {
-        res.status(200).json(results);
+        let response = results;
+        if (Array.isArray(response)) {
+            response = response.map((postDoc) => { return { _id: postDoc._id, title: postDoc.title, content: postDoc.content, createdBy: postDoc.createdBy } })
+        }
+        res.status(200).json(response);
     }).catch((error) => {
         res.status(500).json({ message: "Error Fetching posts", error });
         console.log("Error fetching posts: ", error);
@@ -27,7 +31,8 @@ router.post("/", (req, res) => {
 
     const newPost = new postModel({
         title: req.body.title,
-        content: req.body.content
+        content: req.body.content,
+        createdBy: req.body.createdBy | 'Undefined'
     });
 
     newPost.save().then((result) => {
@@ -41,6 +46,14 @@ router.post("/", (req, res) => {
 router.delete("/:id", (req, res) => {
 
     const id = req.params['id'];
+
+    /* if (id === 'all') {
+        postModel.deleteMany({}).then((result) => {
+            res.status(200).send({ success: true, message: `Deleted All Posts!!` });
+        }).catch((error) => {
+            res.status(500).json({ success: false, message: `Could not delete all posts` });
+        });
+    } */
 
     postModel.deleteOne({ '_id': id }).then((result) => {
         console.log("Delete Executed, result: ", result);

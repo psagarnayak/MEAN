@@ -1,1 +1,40 @@
-<p>signup works!</p>
+<div class="row">
+  <div class="col col-md-6 col-xs-8 col-md-offset-3 col-xs-offset-2">
+    <form [formGroup]="signupForm" (submit)="performSignup()">
+      <div class="form-group">
+        <label for="name">Enter Full Name:</label>
+        <input class="form-control" type="text" id="name" formControlName="name">
+        <span class="help-block" *ngIf="signupForm.get('name')?.touched && !signupForm.get('name')?.valid">User Name is
+          required!</span>
+      </div>
+      <div class="form-group">
+        <label for="email">Enter Login Email:</label>
+        <input class="form-control" type="email" id="email" formControlName="email">
+        <span class="help-block" *ngIf="signupForm.get('email')?.touched && !signupForm.get('email')?.valid">
+          <span *ngIf="signupForm.get('email')?.errors?.required">Email is Required!</span>
+          <span *ngIf="signupForm.get('email')?.errors?.email">Email format is invalid</span>
+        </span>
+      </div>
+      <div class="form-group">
+        <label for="password">Enter Password</label>
+        <input class="form-control" type="password" id="password" formControlName="password">
+        <span class="help-block"
+          *ngIf="signupForm.get('password')?.touched && !signupForm.get('password')?.valid">Please Enter
+          Password!</span>
+      </div>
+      <div class="form-group">
+        <label for="passwordVerify">Re-type Password</label>
+        <input class="form-control" type="password" id="passwordVerify" formControlName="passwordVerify">
+        <span class="help-block"
+          *ngIf="signupForm.get('passwordVerify')?.touched && !signupForm.get('passwordVerify')?.valid">
+          <span *ngIf="signupForm.get('passwordVerify')?.errors?.required">Please Re-Enter Password!</span>
+          <span *ngIf="signupForm.get('passwordVerify')?.errors?.passwordMismatch">Password Re-entered does not match
+            original!</span>
+        </span>
+      </div>
+      <div class="submit">
+        <button class="btn btn-primary" type="submit">Sign Up!</button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -5,7 +5,10 @@ if (!process.env.MONGO_URL || !process.env.MONGO_USER || !process.env.MONGO_PWD)
     process.kill(process.pid, 'SIGTERM');
 }
 
-mongoose.connect(`mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PWD}@${process.env.MONGO_URL}`).then(() => {
+mongoose.connect(
+    `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PWD}@${process.env.MONGO_URL}`,
+    { useNewUrlParser: true, useUnifiedTopology: true }
+).then(() => {
     console.log('Mongodb Connection Established!');
 }).catch(error => {
     console.log('Error establising db connection! Terminating Server.', error);
