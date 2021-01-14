@@ -14,12 +14,12 @@
       <ul class="nav navbar-nav">
         <li routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"><a routerLink="/">View Posts</a>
         </li>
-        <li routerLinkActive="active"><a routerLink="/createPost">Create Post</a></li>
+        <li routerLinkActive="active" *ngIf="isLoggedIn"><a routerLink="/createPost">Create Post</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li class="signin" routerLinkActive="active"><a routerLink="/login">Login</a></li>
-        <li class="signin" routerLinkActive="active"><a routerLink="/signup">SignUp</a></li>
-        <li class="dropdown" appDropdownToggle>
+        <li class="signin" routerLinkActive="active" *ngIf="!isLoggedIn"><a routerLink="/login">Login</a></li>
+        <li class="signin" routerLinkActive="active" *ngIf="!isLoggedIn"><a routerLink="/signup">SignUp</a></li>
+        <li class="dropdown" appDropdownToggle *ngIf="isLoggedIn">
           <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
             aria-expanded="false"><img src="assets/blank-profile.png" class="img-rounded" height="30px"><span
               class="caret"></span></a>
@@ -27,7 +27,7 @@
             <li><a>Update Profile</a></li>
             <li><a>Change Password</a></li>
             <li role="separator" class="divider"></li>
-            <li><a>Sign Out</a></li>
+            <li><a (click)="triggerSignout()">Sign Out</a></li>
           </ul>
         </li>
       </ul>

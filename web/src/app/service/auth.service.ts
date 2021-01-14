@@ -40,6 +40,8 @@ export class AuthService {
             expiresAt: new Date().getTime() + (+response.tokenExpiresInSec * 1000)
           };
           this.loggedInState$.next(true);
+          this.saveProfileToLocalStorage();
+          this.setLogoutExpirationTimeout();
         }
 
       }, (error) => {
@@ -65,7 +67,7 @@ export class AuthService {
     let loggedIn = false;
     if (this.loggedInProfile
       && this.loggedInProfile.authToken
-      && new Date().getTime() >= this.loggedInProfile.expiresAt) {
+      && this.loggedInProfile.expiresAt > new Date().getTime()) {
       loggedIn = true;
     }
     return loggedIn;
@@ -77,7 +79,7 @@ export class AuthService {
     let authToken = localStorage.getItem('userProfile.authToken');
     let expiresAt = localStorage.getItem('userProfile.expiresAt');
 
-    if (name && email && authToken && expiresAt && new Date().getTime() > +expiresAt) {
+    if (name && email && authToken && expiresAt && +expiresAt > new Date().getTime()) {
       this.loggedInProfile = { name, email, authToken, 'expiresAt': +expiresAt }
       this.saveProfileToLocalStorage();
       this.setLogoutExpirationTimeout();
@@ -92,6 +94,7 @@ export class AuthService {
     if (this.loggedInProfile && this.checkIfLoggedIn()) {
       let tokenExpiryInMs = this.loggedInProfile?.expiresAt - new Date().getTime();
       this.logoutAfterTimer = setTimeout(() => {
+        console.log('Timer Expired, logging out!');
         this.logout();
       }, tokenExpiryInMs);
     }

@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const userModel = require('../model/user.model');
 
 const TOKEN_EXPIRES_IN = process.env.TOKEN_EXPIRES_IN_SEC;
+
 router.get('/users', (req, res, nest) => {
     userModel.find().then((userDocs) => {
 

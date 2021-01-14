@@ -21,7 +21,6 @@ export class ShowPostsComponent implements OnInit {
   constructor(private postService: PostService) { }
 
   ngOnInit(): void {
-    console.log('on Init');
     this.postService.fetchPostCount().subscribe(
       (postCount) => {
         this.totalPosts = postCount;
@@ -34,7 +33,6 @@ export class ShowPostsComponent implements OnInit {
   }
 
   onPageChange(newPage: number) {
-    console.log("PageChangeEvent: ", newPage);
     this.currentPage = newPage;
     this.posts = []
     this.postService.fetchPosts(this.currentPage, this.postsPerPage).subscribe(

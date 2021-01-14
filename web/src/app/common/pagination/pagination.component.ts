@@ -20,7 +20,6 @@ export class PaginationComponent implements OnInit, OnChanges {
   ngOnInit(): void { }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes);
     if ('pageSize' in changes || 'totalEntries' in changes) {
       this.totalPages = Math.ceil(this.totalEntries / this.pageSize);
       if (this.totalPages > 0) {
